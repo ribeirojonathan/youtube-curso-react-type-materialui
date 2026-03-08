@@ -1,5 +1,6 @@
 import { Height } from "@mui/icons-material";
-import { Avatar, Box, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, ListItemText, useTheme } from "@mui/material"
+import { Avatar, Box, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from "@mui/material"
+import { useAppDrawerContext } from "../../contexts";
 interface IMenuLateralProviderProps {
   children: React.ReactNode
 }
@@ -8,10 +9,14 @@ interface IMenuLateralProviderProps {
 
 export const MenuLateral: React.FC<IMenuLateralProviderProps> = ({ children }) => {
     const theme = useTheme();
+    const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const {isDrawerOpen, toggleDrawerOpen} = useAppDrawerContext();
+    
     return (
         
         <>        
-            <Drawer variant="permanent">
+            <Drawer open={isDrawerOpen} variant={smDown ? "temporary" : "permanent"} onClose={toggleDrawerOpen}>
                 <Box width={theme.spacing(28)} height="100%" display="flex" flexDirection="column">
                     <Box width="100" height={theme.spacing(20)} display={"flex"} alignItems={"center"} justifyContent={"center"}>
                         <Avatar 
@@ -40,7 +45,7 @@ export const MenuLateral: React.FC<IMenuLateralProviderProps> = ({ children }) =
                 
             </Drawer>
 
-            <Box height="100vh" marginLeft={theme.spacing(28)}>
+            <Box height="100vh" marginLeft={smDown ? 0 : theme.spacing(28)}>
                 {children}
             </Box>
         </>
